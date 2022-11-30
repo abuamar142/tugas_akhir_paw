@@ -1,0 +1,4 @@
+1. Venv berisi :
+	- flask
+	-
+2. 
