@@ -34,6 +34,10 @@ def login():
                     data_user = pengguna.ambilDataUser(username, password)
                     session['pengguna_id'] = data_user[0]
                     session['name'] = data_user[1]
+                    role = data_user[4]
+                    if role == 'admin':
+                        return redirect(url_for('dashboard_admin')) 
+
                     return redirect(url_for('index'))
                 except:
                     return render_template('login.html', tidak_ada=True)
@@ -41,11 +45,32 @@ def login():
                 return render_template('login.html', kurang=True)
         else:
             return render_template('login.html', kosong=True)
+
+    if session.get('pesan') == 'registrasi_berhasil':
+        session.pop('pesan','')
+        return render_template('login.html', berhasil=True)
     return render_template('login.html')
 
-@application.route('/register')
+@application.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html', kosong=True)
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        if username != '' and password != '':
+            if len(username) > 3 and len(password) > 3:
+                if pengguna.ambilDataUser(username, password) == None:
+                    data = (name, username, password, 'user', '')
+                    pengguna.insertDataUser(data)
+                    session['pesan'] = 'registrasi_berhasil'
+                    return redirect(url_for('login'))
+                else:
+                    return render_template('register.html', sudah_ada=True)
+            else:
+                return render_template('register.html', kurang=True)
+        else:
+            return render_template('register.html', kosong=True)
+    return render_template('register.html')
 
 @application.route('/show_note/<no>')
 def show_note(no):
@@ -53,7 +78,10 @@ def show_note(no):
 
 @application.route('/dashboard_admin')
 def dashboard_admin():
-    return render_template('dashboard_admin.html')
+    name = session.get('name')
+    total_user = pengguna.ambilTotalUser()
+    data_user = pengguna.ambilSemuaDataUser()
+    return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user=data_user)
 
 @application.route('/add_income', methods=['GET', 'POST'])
 def add_income():
@@ -105,6 +133,10 @@ def update(no):
 @application.route('/delete/<no>')
 def delete(no):
     return render_template('login.html', no=no)
+
+@application.route('/delete_user/<no>')
+def delete_user(no):
+    return render_template('dashboard_admin.html', no=no)
 
 @application.route('/logout')
 def logout():

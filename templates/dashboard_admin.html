@@ -68,7 +68,7 @@
             <div class="bg-[#FFFBEB] flex justify-between items-center p-10 pb-5 border-b-2 border-[#263159]">
                 <!-- tampilan username -->
                 <div>
-                    <p class="text-3xl font-bold">Admin name{{ name }}</p>
+                    <p class="text-3xl font-bold">{{ name }}</p>
                 </div>
     
                 <!-- tampilan dari saldo -->
@@ -76,7 +76,7 @@
                     <p class="text-xl">Total user</p>
                     <div class="px-14 py-2 bg-[#263159] rounded-lg text-[#FFFBEB]">
                         <p class="font-bold text-lg">
-                            {{ total_user }}5
+                            {{ total_user }}
                         </p>
                     </div>
                 </div>
@@ -107,9 +107,9 @@
                             <tbody class="text-center">
 
                               <!-- menampilkan data user pada table -->
-                              {% for data in data %}
+                              {% for data in data_user %}
                               <tr>
-                                    <!-- user id -->
+                                    <!-- pengguna id -->
                                     <td class="border-r-2 border-[#263159] py-2 px-4">
                                       {{ data[0] }}
                                     </td>
@@ -121,12 +121,12 @@
 
                                     <!-- username -->
                                     <td class="border-r-2 border-[#263159] py-2 px-4">
-                                        {{ data[3] }}
+                                        {{ data[2] }}
                                     </td>
 
                                     <!-- password -->
                                     <td class="border-r-2 border-[#263159] py-2 px-4">
-                                        {{ data[4] }}
+                                        {{ data[3] }}
                                     </td>
 
                                     <!-- total transaction -->
@@ -135,8 +135,10 @@
                                     </td>
 
                                     <!-- menampilkan link delete user -->
-                                    <td class="py-2 px-4">
-                                        <a href="{{ url_for('delete_user', no=data[0]) }}">Delete</a>
+                                    <td class="py-2 px-4 flex justify-center">
+                                        <a href="{{ url_for('delete', no=data[0]) }}" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
+                                            <img src="/static/images/dark-Delete .svg" alt="delete-data" title="hapus-data">
+                                        </a>
                                     </td>
                               </tr>
                               {% endfor %}

@@ -28,17 +28,37 @@ class Pengguna():
 
     def ambilDataUser(self, username, password):
         self.openDatabase()
-        cursor.execute("SELECT * FROM pengguna WHERE username = '%s' AND password = '%s' " %
-                       (username, password))
+        cursor.execute(
+            "SELECT * FROM pengguna WHERE username = '%s' AND password = MD5('%s') " % (username, password)
+        )
         data_user = cursor.fetchone()
+        self.closeDatabase()
+        return data_user
+
+    def ambilTotalUser(self):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT COUNT(pengguna_id) FROM pengguna WHERE role = 'user'"
+        )
+        total_user = cursor.fetchone()
+        self.closeDatabase()
+        return total_user[0]
+
+    def ambilSemuaDataUser(self):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT P.pengguna_id, P.nama, P.username, MD5(P.password), COUNT(T.transaksi_id) as jumlah_transaksi_user FROM pengguna P, transaksi T WHERE P.pengguna_id = T.pengguna_id and P.role = 'user' GROUP BY P.pengguna_id"
+        )
+        data_user = cursor.fetchall()
         self.closeDatabase()
         return data_user
 
     def insertDataUser(self, data):
         self.openDatabase()
         cursor.execute(
-            "INSERT INTO pengguna (nama, username, password) VALUES('%s', '%s', MD5('%s'))" % data)
-        database.comit()
+            "INSERT INTO pengguna (nama, username, password, role, bio) VALUES('%s', '%s', MD5('%s'), '%s', '%s')" % data
+        )
+        database.commit()
         self.closeDatabase
 
     def updateProfil(self, pengguna_id):
