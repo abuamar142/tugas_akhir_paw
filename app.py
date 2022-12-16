@@ -19,15 +19,7 @@ def index():
     pengeluaran = 10000
     persen = round((pengeluaran / pemasukan) * 100)
     data2 = (pemasukan, pengeluaran, persen)
-    data = (
-        ("12/23/12", "beli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorenganbeli gorengan", 0, 200000000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-        ("12/23/12", "beli gorengan", 0, 20000),
-    )
+    data = ()
     name = session.get('name')
     return render_template('dashboard.html', data=data, data2=data2, name=name)
 
@@ -53,7 +45,7 @@ def login():
 
 @application.route('/register')
 def register():
-    return render_template('register.html')
+    return render_template('register.html', kosong=True)
 
 @application.route('/show_note/<no>')
 def show_note(no):
@@ -92,19 +84,19 @@ def add_income():
 
 @application.route('/add_spending')
 def add_spending():
-    return render_template('add_spending.html')
+    return render_template('add_spending.html', kosong=True)
+
+@application.route('/edit_transaction')
+def edit_transaction():
+    return render_template('edit_transaction.html')
 
 @application.route('/profile')
 def profile():
-    return render_template('profile.html')
+    return render_template('profile.html', sukses=True)
 
 @application.route('/edit_profile')
 def edit_profile():
-    return render_template('edit_profile.html')
-
-@application.route('/logout')
-def logout():
-    return render_template('login.html')
+    return render_template('edit_profile.html', kosong=True)
 
 @application.route('/update/<no>')
 def update(no):
@@ -113,6 +105,12 @@ def update(no):
 @application.route('/delete/<no>')
 def delete(no):
     return render_template('login.html', no=no)
+
+@application.route('/logout')
+def logout():
+    session.pop('name', '')
+    session.pop('pengguna_id', '')
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     application.run(debug=True)

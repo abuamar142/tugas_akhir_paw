@@ -98,7 +98,7 @@ class Transaksi():
     def deleteTransaksi(self, pengguna_id):
         self.openDatabase()
         cursor.execute(
-            "DELETE FROM transaksi WHERE pengguna_id =%s" % pengguna_id)
+            "DELETE FROM transaksi WHERE pengguna_id='%s'" % pengguna_id)
         database.commit()
         self.closeDatabase()
 
@@ -110,3 +110,21 @@ class Transaksi():
         jumlah = cursor.fetchone()
         self.closeDatabase()
         return jumlah[0] + 1
+
+    def getCountIncomebyUser(self, pengguna_id):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT SUM(pemasukan) FROM transaksi WHERE pengguna_id='%s'" % pengguna_id
+        )
+        income = cursor.fetchone()
+        self.closeDatabase()
+        return income
+
+    def getCountSpendingbyUser(self, pengguna_id):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT SUM(pengeluaran) FROM transaksi WHERE pengguna_id='%s'" % pengguna_id
+        )
+        spending = cursor.fetchone()
+        self.closeDatabase()
+        return spending

@@ -32,21 +32,19 @@
             <div class="bg-[#FFFBEB] mx-auto py-10 rounded-xl flex flex-col gap-5 max-w-lg">
                 
                 <!-- tampilan flash message -->
-                {% for message in get_flashed_messages() %}
-                    {% if 'danger' in message.category %}
-                        <p class="text-center text-sm font-bold bg-red-300 px-5 py-3 text-[#263159] w-full mb-5">
-                            {{ message }}
-                        </p>
-                    {% elif 'warning' in message.category %}
-                        <p class="text-center text-sm font-bold bg-yellow-300 px-5 py-3 text-[#263159] w-full mb-5">
-                            {{ message }}
-                        </p>
-                    {% elif 'success' in message.category %}
-                        <p class="text-center text-sm font-bold bg-green-300 px-5 py-3 text-[#263159] w-full mb-5">
-                            {{ message }}
-                        </p>
-                    {% endif %}
-                {% endfor %}
+                {% if sudah_ada %}
+                <div class="p-4 mb-4 -mt-10 text-center text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                    Username dan password sudah ada dalam database
+                </div>
+                {% elif kosong %}
+                <div class="p-4 mb-4 -mt-10 text-center text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    Form tidak boleh kosong!
+                </div>
+                {% elif kurang %}
+                <div class="p-4 mb-4 -mt-10 text-center text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    Username dan password tidak boleh kurang dari 3 karakter!
+                </div>
+                {% endif %}
 
                 <div class="px-10 flex flex-col gap-5">
                     <p class="text-center text-3xl font-bold">Create an Account</p>

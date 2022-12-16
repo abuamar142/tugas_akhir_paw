@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <title>Add Income</title>
+    <title>Edit Transaction</title>
 </head>
 <body">
     <div class="min-h-screen min-w-full flex bg-[#FFFBEB]">
@@ -70,7 +70,7 @@
             <div class="bg-[#FFFBEB] flex justify-between items-center p-10 pb-5 border-b-2 border-[#263159]">
                 <!-- tampilan username -->
                 <div class="flex flex-col gap-3">
-                    <p class="text-3xl font-bold">Abu Amar</p>
+                    <p class="text-3xl font-bold">{{ name }}</p>
                 </div>
     
                 <!-- tampilan dari saldo -->
@@ -78,7 +78,7 @@
                     <p class="text-xl">Your Balance</p>
                     <div class="px-14 py-2 bg-[#263159] rounded-lg text-[#FFFBEB]">
                         <p class="font-bold text-lg">
-                            50000
+                            {{ saldo }}
                         </p>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
         <div class="p-10 w-full flex flex-col content-between">    
             
             <!-- container untuk membungkus tombol-tombol -->
-            <div class="mt-20 flex flex-col text-center">
+            <div class="mt-24 flex flex-col text-center">
                 <!-- tampilan flash message -->
                 {% if kosong %}
                 <div class="p-4 text-center text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
@@ -100,28 +100,12 @@
                     Masukkan form nominal dengan angka!
                 </div>
                 {% endif %}
-                <div class="mt-4 flex place-content-around text-[#FFFBEB]">
-
-                    <!-- tombol untuk menuju halaman tambah pemasukan -->
-                    <a href="#">
-                        <div class="bg-[#FFFBEB] text-[#263159] py-2 px-10 rounded-md border-2 border-[#263159] font-bold">
-                            Add Income
-                        </div>
-                    </a>
-
-                    <!-- tombol untuk menuju halaman tambah pengeluaran -->
-                    <a href="{{ url_for('add_spending') }}">
-                        <div class="bg-[#263159] text-[#FFFBEB] py-2 px-10 rounded-md border-2 border-[#263159] hover:bg-transparent hover:text-[#263159] font-bold">
-                            Add Spending
-                        </div>
-                    </a>
-                </div>
             </div>
 
             <!-- container untuk membungkus add income page -->
             <div class="flex flex-col rounded-xl" id="add_income">
                 <div>
-                    <p class="text-4xl font-bold text-center mt-8">Add your Income</p>
+                    <p class="text-4xl font-bold text-center mt-4 mb-8">Edit your Transaction</p>
                     <p class="text-base mt-2 text-center">
                         "Money, like emotions, is something you must control to keep your life <br> on the right track." - Natasha Munson, author, inspirational speaker and CEO of Be Magic, Inc.
                     </p>
@@ -133,7 +117,10 @@
                                 <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="text" placeholder="Nominal" name="nominal">
                                 <input type="file" name="nota" class="bg-transparent rounded-md border-[#263159] border-2 file:mr-4 file:py-3 file:px-5 file:font-semibold file:bg-[#263159] file:text-[#FFFBEB] hover:file:bg-transparent hover:file:text-[#263159] file:border-0">
                             </div>
-                            <input class="bg-[#263159] border-2 px-5 py-3 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-full mt-8 hover:bg-transparent hover:text-[#263159]" type="submit" value="Add">
+                            <div class="flex gap-28">
+                                <a class="bg-red-500 border-2 px-5 py-3 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-full mt-7 text-center hover:animate-pulse" href="{{ url_for('index') }}">Back</a>
+                                <input class="bg-[#263159] border-2 px-5 py-3 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-full mt-7 hover:animate-pulse" type="submit" value="Save">
+                            </div>
                         </form>
                     </div>
 
