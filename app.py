@@ -49,6 +49,9 @@ def index():
     elif session.get('pesan') == 'delete_transaksi_berhasil':
         session.pop('pesan', '')
         return render_template('dashboard.html', name=name, data_rekap=data_rekap, delete_transaksi_berhasil=True, data=data)
+    elif session.get('pesan') == 'edit_transaksi_berhasil':
+        session.pop('pesan', '')
+        return render_template('dashboard.html', name=name, data_rekap=data_rekap, edit_transaksi_berhasil=True, data=data)
 
     return render_template('dashboard.html', data=data, name=name, data_rekap=data_rekap)
 
@@ -104,7 +107,6 @@ def register():
 @application.route('/show_note/<no>')
 def show_note(no):
     data = transaksi.ambilSatuDataTransaksi(no)
-    print(data)
     return render_template('show_note.html', data=data)
 
 @application.route('/dashboard_admin')
@@ -237,9 +239,50 @@ def edit_profile():
 
     return render_template('edit_profile.html', data=data)
 
-@application.route('/edit_transaction/<no>')
+@application.route('/edit_transaction/<no>', methods=['GET', 'POST'])
 def edit_transaction(no):
     data = transaksi.ambilSatuDataTransaksi(no)
+    if request.method == 'POST':
+        # mengambil pengguna id dari session
+        transaksi_id = data[0]
+
+        # mengambil description, nominal, dan file nota dari form
+        description = request.form['description']
+        nominal = request.form['nominal']
+        nota = request.files['nota']
+
+        # mengambil total transaksi saat ini
+        jumlah = str(transaksi.getCountTransaksiIdinDatabase())
+
+        # mengatur lokasi penyimpanan dan nama file
+        filename = application.config['UPLOAD_FOLDER'] + '/' + 'nota_' + jumlah
+        
+        if description != '' and nominal != '':
+            try:
+                nominal = int(nominal)
+                try:
+                    nota.save(filename)
+                    filename = 'nota_' + jumlah
+
+                    # jika yang 0 adalah pengeluaran maka insert data pemasukan
+                    if data[2] == 0:
+                        data = (description, nominal, 0, filename, transaksi_id)
+
+                    # jika yang 0 adalah pemasukan maka insert data pengeluaran
+                    elif data[1] == 0:
+                        data = (description, 0, nominal, filename, transaksi_id)
+                    
+                    print(data)
+                    transaksi.updateTransaksi(data)
+
+                    session['pesan'] = 'edit_transaksi_berhasil'
+                    return redirect(url_for('index'))
+                except:
+                    return render_template('edit_transaction.html', gagal=True)
+            except:
+                return render_template('edit_transaction.html', bukan_angka=True)
+        else:
+            return render_template('edit_transaction.html', kosong=True)
     return render_template('edit_transaction.html', data=data)
 
 @application.route('/delete_transaksi/<no>')

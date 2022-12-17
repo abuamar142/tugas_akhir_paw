@@ -144,7 +144,8 @@ class Transaksi():
     def updateTransaksi(self, data):
         self.openDatabase()
         cursor.execute(
-            "UPDATE transaksi SET deskripsi='%s', nominal='%s' , nota='%s' WHERE pengguna_id='%s' " % data)
+            "UPDATE transaksi SET deskripsi='%s', pemasukan='%s', pengeluaran='%s', upload_file='%s' WHERE transaksi_id='%s' " % data
+        )
         database.commit()
         self.closeDatabase()
 
