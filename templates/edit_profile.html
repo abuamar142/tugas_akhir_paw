@@ -32,9 +32,13 @@
             <div class="bg-[#FFFBEB] mx-auto py-10 rounded-xl flex flex-col gap-5 max-w-lg">
 
                 <!-- tampilan flash message -->
-                {% if tidak_sesuai %}
+                {% if gagal %}
                 <div class="p-4 mb-4 -mt-10 text-center text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
-                    Password baru tidak sesuai dengan password lama!
+                    Profil gagal diupdate
+                </div>
+                {% elif kurang %}
+                <div class="p-4 mb-4 -mt-10 text-center text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    Form tidak boleh kurang dari 3 karakter!
                 </div>
                 {% elif kosong %}
                 <div class="p-4 mb-4 -mt-10 text-center text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
@@ -51,12 +55,8 @@
                     <p class="text-center">Let’s start managing your money <br> with this application</p>
                     <form action="#" method="post">
                         <div class="flex flex-col gap-3">
-                            <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="text" placeholder="Name" name="name">
-                            <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="text" placeholder="Username" name="username">
-                            <div class="relative">
-                                <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] w-full" type="password" placeholder="Old Password" name="old-password" id="password">
-                                <i class="fa-regular fa-eye-slash absolute -translate-x-10 translate-y-5 cursor-pointer" onclick="showPassword('password')"><button></button></i>
-                            </div>
+                            <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="text" placeholder="{{ data[1] }}" name="name">
+                            <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="text" placeholder="{{ data[2] }}" name="username">
                             <div class="relative">
                                 <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] w-full" type="password" placeholder="New Password" name="new-password" id="new-password">
                                 <i class="fa-regular fa-eye-slash absolute -translate-x-10 translate-y-5 cursor-pointer" onclick="showPassword('new-password')"><button></button></i>

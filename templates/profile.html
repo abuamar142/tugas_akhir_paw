@@ -69,7 +69,7 @@
             <div class="mt-10 flex flex-col text-center">
 
                 <!-- tampilan flash message -->
-                {% if sukses %}
+                {% if berhasil %}
                 <div class="p-4 mb-4 -mt-10 text-center text-sm text-[#263159] bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
                     Profil berhasil diganti!
                 </div>
@@ -86,26 +86,58 @@
                         </a>
                     </div>
                     <p class="text-lg font-bold mt-2 text-center">
-                        {{ name }} Name
+                        {{ data[1] }} 
                     </p>
                     <p class="text-base mt-2 text-center">
-                        - {{ bio }} -
+                        - {{ data[5] }} -
                     </p>
                     
-                    <div class="mx-64 my-7 text-center">
+                    <div class="mx-64 my-7">
                         <div class="flex flex-col gap-3">
-                            <p class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]">
-                                {{ name }} nama
-                            </p>
-                            <p class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]">
-                                {{ username }} username
-                            </p>
-                            <p class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" id="password">
-                                {{ password }} password
-                            </p>
-                            <p class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]">
-                                {{ nominal }} nominal
-                            </p>
+                            <div class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] flex">
+                                <div class="w-[100px]">
+                                    Username
+                                </div>
+                                <div>
+                                    :
+                                </div>
+                                <div class="ml-5">
+                                    {{ data[2] }}
+                                </div>
+                            </div>
+                            <div class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] flex">
+                                <div class="w-[100px]">
+                                    Password
+                                </div>
+                                <div>
+                                    :
+                                </div>
+                                <div class="ml-5">
+                                    {{ data[3] }}
+                                </div>
+                            </div>
+                            <div class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] flex">
+                                <div class="w-[100px]">
+                                    Nama
+                                </div>
+                                <div>
+                                    :
+                                </div>
+                                <div class="ml-5">
+                                    {{ data[1] }}
+                                </div>
+                            </div>
+                            <div class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] flex">
+                                <div class="w-[100px]">
+                                    Saldo
+                                </div>
+                                <div>
+                                    :
+                                </div>
+                                <div class="ml-5">
+                                    {{ saldo }}
+                                </div>
+                            </div>
                         </div>
                     </div>
 

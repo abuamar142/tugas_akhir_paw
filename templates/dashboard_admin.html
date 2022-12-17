@@ -106,8 +106,45 @@
                             </thead>
                             <tbody class="text-center">
 
-                              <!-- menampilkan data user pada table -->
-                              {% for data in data_user %}
+                              <!-- menampilkan data user yang tidak punya transaksi pada table -->
+                              {% for data in data_user_0_transaksi %}
+                              <tr>
+                                    <!-- pengguna id -->
+                                    <td class="border-r-2 border-[#263159] py-2 px-4">
+                                      {{ data[0] }}
+                                    </td>
+
+                                    <!-- nama -->
+                                    <td class="border-r-2 border-[#263159] py-2 text-left px-4">
+                                        {{ data[1] }}
+                                    </td>
+
+                                    <!-- username -->
+                                    <td class="border-r-2 border-[#263159] py-2 px-4">
+                                        {{ data[2] }}
+                                    </td>
+
+                                    <!-- password -->
+                                    <td class="border-r-2 border-[#263159] py-2 px-4">
+                                        {{ data[3] }}
+                                    </td>
+
+                                    <!-- total transaction -->
+                                    <td class="border-r-2 border-[#263159] py-2 px-4">
+                                        0
+                                    </td>
+
+                                    <!-- menampilkan link delete user -->
+                                    <td class="py-2 px-4 flex justify-center">
+                                        <a href="{{ url_for('delete_user', no=data[0]) }}" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
+                                            <img src="/static/images/dark-Delete .svg" alt="delete-data" title="hapus-data">
+                                        </a>
+                                    </td>
+                              </tr>
+                              {% endfor %}
+
+                              <!-- menampilkan data user yang mempunyai transaksi pada table -->
+                              {% for data in data_user_transaksi %}
                               <tr>
                                     <!-- pengguna id -->
                                     <td class="border-r-2 border-[#263159] py-2 px-4">
@@ -136,7 +173,7 @@
 
                                     <!-- menampilkan link delete user -->
                                     <td class="py-2 px-4 flex justify-center">
-                                        <a href="{{ url_for('delete', no=data[0]) }}" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
+                                        <a href="{{ url_for('delete_user', no=data[0]) }}" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
                                             <img src="/static/images/dark-Delete .svg" alt="delete-data" title="hapus-data">
                                         </a>
                                     </td>

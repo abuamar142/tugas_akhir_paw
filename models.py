@@ -26,6 +26,15 @@ class Pengguna():
         global database, cursor
         database.close()
 
+    def ambilDataUserbyId(self, pengguna_id):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT pengguna_id, nama, username, MD5(password), role, bio FROM pengguna WHERE pengguna_id='%s'" % pengguna_id
+        )
+        data_user = cursor.fetchone()
+        self.closeDatabase()
+        return data_user
+
     def ambilDataUser(self, username, password):
         self.openDatabase()
         cursor.execute(
@@ -44,7 +53,16 @@ class Pengguna():
         self.closeDatabase()
         return total_user[0]
 
-    def ambilSemuaDataUser(self):
+    def ambilSemuaDataUserNotHaveTransaction(self):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT P.pengguna_id, P.nama, P.username, MD5(P.password), COUNT(T.transaksi_id) as jumlah_transaksi_user FROM pengguna P  LEFT JOIN transaksi T ON P.pengguna_id = T.pengguna_id WHERE T.transaksi_id IS NULL AND P.role = 'user'"
+        )
+        data_user = cursor.fetchall()
+        self.closeDatabase()
+        return data_user
+
+    def ambilSemuaDataUserHaveTransaction(self):
         self.openDatabase()
         cursor.execute(
             "SELECT P.pengguna_id, P.nama, P.username, MD5(P.password), COUNT(T.transaksi_id) as jumlah_transaksi_user FROM pengguna P, transaksi T WHERE P.pengguna_id = T.pengguna_id and P.role = 'user' GROUP BY P.pengguna_id"
@@ -61,10 +79,17 @@ class Pengguna():
         database.commit()
         self.closeDatabase
 
-    def updateProfil(self, pengguna_id):
+    def updateProfil(self, data):
         self.openDatabase()
         cursor.execute(
-            "UPDATE pengguna SET nama='%s', username='%s' , password=MD5('%s') , bio='%s' WHERE pengguna_id='%s' " % pengguna_id)
+            "UPDATE pengguna SET nama='%s', username='%s' , password=MD5('%s') , bio='%s' WHERE pengguna_id='%s' " % data)
+        database.commit()
+        self.closeDatabase()
+
+    def deleteUser(self, pengguna_id):
+        self.openDatabase()
+        cursor.execute(
+            "DELETE FROM pengguna WHERE pengguna_id='%s'" % pengguna_id)
         database.commit()
         self.closeDatabase()
 
@@ -95,14 +120,23 @@ class Transaksi():
     def insertDataTransaksi(self, data):
         self.openDatabase()
         cursor.execute(
-            "INSERT INTO transaksi (pengguna_id, date, deskripsi, pemasukan, pengeluaran, upload_file ) VALUES('%s', '%s', '%s','%s', '%s)" % data)
-        database.comit()
+            "INSERT INTO transaksi (pengguna_id, date, deskripsi, pemasukan, pengeluaran, upload_file) VALUES('%s', NOW(), '%s', '%s', '%s', '%s')" % data
+        )
+        database.commit()
         self.closeDatabase
+
+    def ambilSatuDataTransaksi(self, transaksi_id):
+        self.openDatabase()
+        cursor.execute(
+            "SELECT * FROM transaksi WHERE transaksi_id = '%s'" % transaksi_id)
+        data_user = cursor.fetchone()
+        self.closeDatabase()
+        return data_user
 
     def ambilDataTransaksi(self, pengguna_id):
         self.openDatabase()
         cursor.execute(
-            "SELECT * FROM transaksi WHERE pengguna_id = '%s'" % pengguna_id)
+            "SELECT * FROM transaksi WHERE pengguna_id = '%s' ORDER BY date DESC" % pengguna_id)
         data_user = cursor.fetchall()
         self.closeDatabase()
         return data_user
@@ -114,11 +148,17 @@ class Transaksi():
         database.commit()
         self.closeDatabase()
 
-
-    def deleteTransaksi(self, pengguna_id):
+    def deleteTransaksiWherePenggunaId(self, pengguna_id):
         self.openDatabase()
         cursor.execute(
             "DELETE FROM transaksi WHERE pengguna_id='%s'" % pengguna_id)
+        database.commit()
+        self.closeDatabase()
+
+    def deleteTransaksi(self, transaksi_id):
+        self.openDatabase()
+        cursor.execute(
+            "DELETE FROM transaksi WHERE transaksi_id='%s'" % transaksi_id)
         database.commit()
         self.closeDatabase()
 
@@ -138,7 +178,7 @@ class Transaksi():
         )
         income = cursor.fetchone()
         self.closeDatabase()
-        return income
+        return income[0]
 
     def getCountSpendingbyUser(self, pengguna_id):
         self.openDatabase()
@@ -147,4 +187,9 @@ class Transaksi():
         )
         spending = cursor.fetchone()
         self.closeDatabase()
-        return spending
+        return spending[0]
+
+transaksi = Transaksi()
+data = (2, 'Beli gorengan', 3000, 0, 'nota_1')
+# transaksi.insertDataTransaksi(data)
+# transaksi.deleteTransaksi(3)
