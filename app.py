@@ -120,10 +120,13 @@ def dashboard_admin():
     total_user = pengguna.ambilTotalUser()
     data_user_0_transaksi = pengguna.ambilSemuaDataUserNotHaveTransaction()
     data_user_transaksi = pengguna.ambilSemuaDataUserHaveTransaction()
-    if data_user_0_transaksi[0][0] == None:
-        return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_transaksi=data_user_transaksi)
-    elif data_user_transaksi[0][0] == None:
-        return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_0_transaksi=data_user_0_transaksi)
+    try:
+        if data_user_0_transaksi[0][0] == None:
+            return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_transaksi=data_user_transaksi)
+        elif data_user_transaksi[0][0] == None:
+            return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_0_transaksi=data_user_0_transaksi)
+    except:
+        pass
     if session.get('pesan') == 'delete_user_berhasil':
         session.pop('pesan', '')
         return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_transaksi=data_user_transaksi, data_user_0_transaksi=data_user_0_transaksi, delete_user_berhasil=True)
@@ -131,6 +134,16 @@ def dashboard_admin():
 
 @application.route('/add_income', methods=['GET', 'POST'])
 def add_income():
+    name = session.get('name')
+
+    pemasukan = transaksi.getCountIncomebyUser(session.get('pengguna_id'))
+    pengeluaran = transaksi.getCountSpendingbyUser(session.get('pengguna_id'))
+    if pemasukan == None or pengeluaran == None:
+        pemasukan = 0
+        pengeluaran = 0
+
+    saldo = pemasukan - pengeluaran
+
     if request.method == 'POST':
         # mengambil pengguna id dari session
         pengguna_id = session.get('pengguna_id')
@@ -158,15 +171,25 @@ def add_income():
                     session['pesan'] = 'add_income_berhasil'
                     return redirect(url_for('index'))
                 except:
-                    return render_template('add_income.html', gagal=True)
+                    return render_template('add_income.html', name=name, saldo=saldo, gagal=True)
             except:
-                return render_template('add_income.html', bukan_angka=True)
+                return render_template('add_income.html', name=name, saldo=saldo, bukan_angka=True)
         else:
-            return render_template('add_income.html', kosong=True)
-    return render_template('add_income.html')
+            return render_template('add_income.html', name=name, saldo=saldo, kosong=True)
+    return render_template('add_income.html', name=name, saldo=saldo)
 
 @application.route('/add_spending', methods=['GET', 'POST'])
 def add_spending():
+    name = session.get('name')
+
+    pemasukan = transaksi.getCountIncomebyUser(session.get('pengguna_id'))
+    pengeluaran = transaksi.getCountSpendingbyUser(session.get('pengguna_id'))
+    if pemasukan == None or pengeluaran == None:
+        pemasukan = 0
+        pengeluaran = 0
+
+    saldo = pemasukan - pengeluaran
+
     if request.method == 'POST':
         # mengambil pengguna id dari session
         pengguna_id = session.get('pengguna_id')
@@ -194,12 +217,12 @@ def add_spending():
                     session['pesan'] = 'add_spending_berhasil'
                     return redirect(url_for('index'))
                 except:
-                    return render_template('add_spending.html', gagal=True)
+                    return render_template('add_spending.html', saldo=saldo, name=name , gagal=True)
             except:
-                return render_template('add_spending.html', bukan_angka=True)
+                return render_template('add_spending.html', saldo=saldo, name=name , bukan_angka=True)
         else:
-            return render_template('add_spending.html', kosong=True)
-    return render_template('add_spending.html')
+            return render_template('add_spending.html', saldo=saldo, name=name , kosong=True)
+    return render_template('add_spending.html', saldo=saldo, name=name)
 
 @application.route('/profile')
 def profile():
@@ -251,6 +274,15 @@ def edit_profile():
 @application.route('/edit_transaction/<no>', methods=['GET', 'POST'])
 def edit_transaction(no):
     data = transaksi.ambilSatuDataTransaksi(no)
+
+    pemasukan = transaksi.getCountIncomebyUser(session.get('pengguna_id'))
+    pengeluaran = transaksi.getCountSpendingbyUser(session.get('pengguna_id'))
+    if pemasukan == None or pengeluaran == None:
+        pemasukan = 0
+        pengeluaran = 0
+
+    saldo = pemasukan - pengeluaran
+
     if request.method == 'POST':
         # mengambil pengguna id dari session
         transaksi_id = data[0]
@@ -287,12 +319,12 @@ def edit_transaction(no):
                     session['pesan'] = 'edit_transaksi_berhasil'
                     return redirect(url_for('index'))
                 except:
-                    return render_template('edit_transaction.html', gagal=True)
+                    return render_template('edit_transaction.html', gagal=True, saldo=saldo)
             except:
-                return render_template('edit_transaction.html', bukan_angka=True)
+                return render_template('edit_transaction.html', bukan_angka=True, saldo=saldo)
         else:
-            return render_template('edit_transaction.html', kosong=True)
-    return render_template('edit_transaction.html', data=data)
+            return render_template('edit_transaction.html', kosong=True, saldo=saldo)
+    return render_template('edit_transaction.html', data=data, saldo=saldo)
 
 @application.route('/delete_transaksi/<no>')
 def delete_transaksi(no):

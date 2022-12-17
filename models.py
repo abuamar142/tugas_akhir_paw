@@ -189,8 +189,3 @@ class Transaksi():
         spending = cursor.fetchone()
         self.closeDatabase()
         return spending[0]
-
-transaksi = Transaksi()
-data = (2, 'Beli gorengan', 3000, 0, 'nota_1')
-# transaksi.insertDataTransaksi(data)
-# transaksi.deleteTransaksi(3)
