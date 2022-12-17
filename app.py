@@ -14,6 +14,8 @@ transaksi = Transaksi()
 def index():
     if 'name' not in session:
         return redirect(url_for('login'))
+    if session.get('role') == 'admin':
+        return redirect(url_for('dashboard_admin'))
     
     # data keuangan
     pemasukan = transaksi.getCountIncomebyUser(session.get('pengguna_id'))
@@ -66,6 +68,7 @@ def login():
                     data_user = pengguna.ambilDataUser(username, password)
                     session['pengguna_id'] = data_user[0]
                     session['name'] = data_user[1]
+                    session['role'] = data_user[4]
                     role = data_user[4]
                     if role == 'admin':
                         return redirect(url_for('dashboard_admin')) 
@@ -111,10 +114,16 @@ def show_note(no):
 
 @application.route('/dashboard_admin')
 def dashboard_admin():
+    if session.get('role') == 'user':
+        return redirect(url_for('index'))
     name = session.get('name')
     total_user = pengguna.ambilTotalUser()
     data_user_0_transaksi = pengguna.ambilSemuaDataUserNotHaveTransaction()
     data_user_transaksi = pengguna.ambilSemuaDataUserHaveTransaction()
+    if data_user_0_transaksi[0][0] == None:
+        return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_transaksi=data_user_transaksi)
+    elif data_user_transaksi[0][0] == None:
+        return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_0_transaksi=data_user_0_transaksi)
     if session.get('pesan') == 'delete_user_berhasil':
         session.pop('pesan', '')
         return render_template('dashboard_admin.html', name=name, total_user=total_user, data_user_transaksi=data_user_transaksi, data_user_0_transaksi=data_user_0_transaksi, delete_user_berhasil=True)
