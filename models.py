@@ -56,7 +56,7 @@ class Pengguna():
     def ambilSemuaDataUserNotHaveTransaction(self):
         self.openDatabase()
         cursor.execute(
-            "SELECT P.pengguna_id, P.nama, P.username, MD5(P.password), COUNT(T.transaksi_id) as jumlah_transaksi_user FROM pengguna P  LEFT JOIN transaksi T ON P.pengguna_id = T.pengguna_id WHERE T.transaksi_id IS NULL AND P.role = 'user'"
+            "SELECT P.pengguna_id, P.nama, P.username, MD5(P.password) FROM pengguna P  LEFT JOIN transaksi T ON P.pengguna_id = T.pengguna_id WHERE T.transaksi_id IS NULL AND P.role = 'user'"
         )
         data_user = cursor.fetchall()
         self.closeDatabase()
