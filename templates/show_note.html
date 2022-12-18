@@ -11,6 +11,8 @@
 <body">
     <div class="bg-[#263159] min-h-screen p-10 flex flex-col justify-between">
         <div class="flex justify-between">
+
+            <!-- tampilan logo -->
             <div class="flex items-center gap-3">
                 <div>
                     <img src="/static/images/logo.svg" alt="logo">
@@ -19,17 +21,28 @@
                     <p>Personal Financial Records</p>
                 </div>
             </div>
+
+            <!-- tombol kembali -->
             <a class="bg-red-500 border-2 px-5 py-2 rounded-md border-[#263159] text-[#FFFBEB] font-bold text-center hover:animate-pulse" href="{{ url_for('index') }}">Back</a>
         </div>
 
+        <!-- container untuk membungkus tampilan nota -->
         <div class="flex flex-col text-[#FFFBEB] items-center">
+
+            <!-- deskripsi dari file note -->
             <p class="text-xl font-bold text-center mt-8">{{ data[4] }}</p>
+
+            <!-- gambar dari file note -->
             <div class="max-w-[690px] m-5">
                 <img src="/static/uploads/{{ data[6] }}" alt="nota-{{ data[4] }}">
             </div>
+
+            <!-- tanggal penginputan transaksi -->
             <p class="text-base mt-2 text-center">{{ data[3] }}</p>
+
         </div>
 
+        <!-- tampilan copyright -->
         <div class="text-[#FFFBEB] text-sm">
             Copyright @ Kelompok 4 <br> Privacy policy
         </div>

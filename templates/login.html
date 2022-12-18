@@ -11,6 +11,8 @@
 
 <!-- script untuk show dan hide text pada kolom password -->
 <script>
+
+    // script untuk show dan hide password form
     function showPassword(id) {
       var password = document.getElementById(id);
       if (password.type === "password") {
@@ -60,29 +62,41 @@
                     <p class="text-center text-3xl font-bold">Welcome back</p>
                     <p class="text-center">Hey, Enter your details to get sign in <br> to your account</p>
 
-                    <!-- form -->
+                    <!-- form login -->
                     <form action="#" method="post">
                         <div class="flex flex-col gap-3">
+
+                            <!-- form username -->
                             <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159]" type="username" placeholder="Username" name="username">
+
+                            <!-- form password -->
                             <div class="relative">
                                 <input class="bg-transparent border-2 px-5 py-3 rounded-md border-[#263159] text-[#263159] w-full" type="password" placeholder="Password" name="password" id="password">
                                 <i class="fa-regular fa-eye-slash absolute -translate-x-10 translate-y-5 cursor-pointer" onclick="showPassword('password')"><button></button></i>
                             </div>
                         </div>
+
+                        <!-- tombol login -->
                         <input class="bg-[#263159] border-2 px-5 py-3 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-full mt-7 hover:bg-transparent hover:text-[#263159]" type="submit" value="Sign in">
                     </form>
+
+                    <!-- link untuk menuju halaman register -->
                     <div class="flex justify-center gap-1">
                         <p>
                             Don’t have an account?
                         </p>
                         <a href="{{ url_for('register') }}" class="font-bold">Request now</a>
                     </div>
+
                 </div>
             </div>
         </div>
+
+        <!-- tampilan copyright -->
         <div class="text-[#FFFBEB] text-sm">
             Copyright @ Kelompok 4 <br> Privacy policy
         </div>
+        
     </div>
 </body>
 </html>
