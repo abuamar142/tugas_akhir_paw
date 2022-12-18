@@ -138,12 +138,15 @@
 
                                     <!-- menampilkan link delete user -->
                                     <td class="py-2 px-4 flex justify-center">
-                                        <a href="#" class="show-confirmation hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
+                                        <a href="#" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full" onclick="showConfirmation('{{ data[0] }}')">
                                             <img src="/static/images/dark-Delete .svg" alt="delete-data" title="hapus-data">
                                         </a>
 
                                         <!-- start confirmation box -->
-                                        <div class="confirmation h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-[#263159] bg-opacity-50 invisible">
+
+                                        {% set id_confirm = "confirmation_box_%s" % data[0] %}
+
+                                        <div class="confirmation h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-[#263159] bg-opacity-50 invisible" id={{ id_confirm }}>
                                             <div class="bg-[#FFFBEB] rounded-lg shadow-lg w-1/3 flex flex-col gap-5 p-5 items-center">
                                                 <div>
                                                     <img class="w-24" src="/static/images/dark-Danger Triangle.svg" alt="danger-icon">
@@ -152,7 +155,8 @@
                                                     <h2 class="font-bold text-xl text-center">Are you sure you want to delete your transaction?</h2>
                                                 </div>
                                                 <div class="flex justify-between gap-36">
-                                                    <a class="close-confirmation bg-[#263159] border-2 px-4 py-2 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="#">No, Back</a>
+                                                    <a class="close-confirmation bg-[#263159] border-2 px-4 py-2 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="#" onclick="hideConfirmation('{{ data[0] }}')">No, Back</a>
+
                                                     <a class="bg-red-500 border-2 px-4 py-2 rounded-md border-red-500 text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="{{ url_for('delete_user', no=data[0]) }}">Yes, Delete</a>
                                                 </div>
                                             </div>
@@ -193,12 +197,15 @@
 
                                     <!-- menampilkan link delete user -->
                                     <td class="py-2 px-4 flex justify-center">
-                                        <a href="#" class="show-confirmation-2 hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full">
+                                        <a href="#" class="hover:duration-700 hover:animate-pulse bg-transparent border-2 border-[#263159] p-2 rounded-full" onclick="showConfirmation('{{ data[0] }}')">
                                             <img src="/static/images/dark-Delete .svg" alt="delete-data" title="hapus-data">
                                         </a>
 
                                         <!-- start confirmation box -->
-                                        <div class="confirmation-2 h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-[#263159] bg-opacity-50 invisible">
+
+                                        {% set id_confirm = "confirmation_box_%s" % data[0] %}
+
+                                        <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-[#263159] bg-opacity-50 invisible"  id={{ id_confirm }}>
                                             <div class="bg-[#FFFBEB] rounded-lg shadow-lg w-1/3 flex flex-col gap-5 p-5 items-center">
                                                 <div>
                                                     <img class="w-24" src="/static/images/dark-Danger Triangle.svg" alt="danger-icon">
@@ -207,7 +214,8 @@
                                                     <h2 class="font-bold text-xl text-center">Are you sure you want to delete your transaction?</h2>
                                                 </div>
                                                 <div class="flex justify-between gap-36">
-                                                    <a class="close-confirmation-2 bg-[#263159] border-2 px-4 py-2 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="#">No, Back</a>
+                                                    <a class="bg-[#263159] border-2 px-4 py-2 rounded-md border-[#263159] text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="#"  onclick="hideConfirmation('{{ data[0] }}')">No, Back</a>
+
                                                     <a class="bg-red-500 border-2 px-4 py-2 rounded-md border-red-500 text-[#FFFBEB] font-bold w-35 mt-7 text-center hover:animate-pulse" href="{{ url_for('delete_user', no=data[0]) }}">Yes, Delete</a>
                                                 </div>
                                             </div>
@@ -233,31 +241,12 @@
     </div>
     <script>
         
-        // script untuk menampilkan confirmation box
-        const confirmation = document.querySelector('.confirmation');
-        const showConfirmation = document.querySelector('.show-confirmation');
-        const closeConfirmation = document.querySelector('.close-confirmation');
-
-        showConfirmation.addEventListener('click', function()  {
-            confirmation.classList.remove('invisible')
-        });
-
-        closeConfirmation.addEventListener('click', function()  {
-            confirmation.classList.add('invisible')
-        });
-        
-        // script untuk menampilkan confirmation box
-        const confirmation_2 = document.querySelector('.confirmation-2');
-        const showConfirmation_2 = document.querySelector('.show-confirmation-2');
-        const closeConfirmation_2 = document.querySelector('.close-confirmation-2');
-
-        showConfirmation_2.addEventListener('click', function()  {
-            confirmation_2.classList.remove('invisible')
-        });
-
-        closeConfirmation_2.addEventListener('click', function()  {
-            confirmation_2.classList.add('invisible')
-        });
+    function showConfirmation(no) {
+    document.getElementById(`confirmation_box_${no}`).classList.remove('invisible');
+    }
+    function hideConfirmation(no) {
+    document.getElementById(`confirmation_box_${no}`).classList.add('invisible');
+    }
         
     </script>
 </body>
